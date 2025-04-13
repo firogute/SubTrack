@@ -1,9 +1,14 @@
 import express from "express";
 import {PORT} from './config/env.js';
+import authRouter from "./routes/auth.routes.js";
 
 const app = express();
 
 app.use(express.json());
+
+// authentication router
+app.use("/auth", authRouter);
+
 app.get('/', (req, res) => {
     res.send("Hello World!")
 })
