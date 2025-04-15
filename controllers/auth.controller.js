@@ -11,7 +11,7 @@ export const signUp = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
-    //   Check existing user
+    //   Check existing use
 
     const existingUser = await User.findOne({ email });
 
