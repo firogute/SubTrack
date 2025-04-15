@@ -18,7 +18,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 // subscriptions
 app.use("/api/v1/subscriptions", subscriptionRouter);
-app.use(errorMiddleware());
+app.use(errorMiddleware);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
