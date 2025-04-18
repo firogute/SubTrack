@@ -25,3 +25,13 @@ export const getUserSubscriptions = async (req, res, next) => {
     next(e);
   }
 };
+
+export const getAllSubscriptions = async (req, res, next) => {
+  try {
+    const subscriptions = await Subscription.find();
+
+    res.status(200).json({ success: true, data: subscriptions });
+  } catch (e) {
+    next(e);
+  }
+};
