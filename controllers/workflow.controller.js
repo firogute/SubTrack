@@ -1,4 +1,6 @@
-import { serve } from "@upstash/workflow/express.js";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const { serve } = require("@upstash/workflow/express");
 import Subscription from "../models/subscription.model.js";
 import dayjs from "dayjs";
 
@@ -25,13 +27,18 @@ export const sendReminders = serve(async (context) => {
         reminderDate,
       );
     }
-    await triggerRemainder(context, `Reminder ${daysBefore} days before`);
+    await triggerRemdinder(context, `Reminder ${daysBefore} days before`);
   }
 });
 
 const fetchSubscription = async (context, subscriptionId) => {
-  return await context.run("get subscription", () => {
-    return Subscription.findById(subscriptionId).populate("user", "name email");
+  return await context.run("get subscription", async () => {
+    const doc = await Subscription.findById(subscriptionId).populate(
+      "user",
+      "name email",
+    );
+
+    return doc;
   });
 };
 
@@ -39,7 +46,7 @@ const sleepUntilReminder = async (context, label, date) => {
   console.log(`Sleeping until ${label} reminder at ${date}`);
   await context.sleepUntil(label, date.toDate());
 };
-const triggerRemainder = async (context, label) => {
+const triggerReminder = async (context, label) => {
   return await context.run(label, () => {
     console.log(`Triggering ${label} remainder`);
 
